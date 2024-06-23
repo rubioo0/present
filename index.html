@@ -1,88 +1,536 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Наша історія</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Compliment Generator</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        text-align: center;
+        background-color: #ffecf2; /* Light pink background */
+        margin: 0;
+        padding: 0;
+        display: flex; /* Use flexbox for layout */
+        min-height: 100vh; /* Full viewport height */
+        flex-direction: column; /* Vertical stacking */
+      }
+
+      header {
+        background-color: #ff85a2; /* Light coral header */
+        color: #fff;
+        padding: 20px 0;
+        margin-bottom: 20px;
+        border-bottom: 3px solid #ff6b8a; /* Darker coral border */
+      }
+
+      main {
+        padding: 20px;
+        flex: 1; /* Take remaining vertical space */
+        display: flex; /* Nested flexbox for main content alignment */
+        justify-content: center; /* Center content horizontally */
+        align-items: center; /* Center content vertically */
+      }
+
+      #compliment-section {
+        margin: 20px auto;
+        max-width: 600px;
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        position: relative; /* Added for positioning */
+      }
+
+      button {
+        padding: 12px 24px;
+        background-color: #ff85a2; /* Matching button color */
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        border-radius: 6px;
+        font-size: 18px;
+        margin-top: 20px;
+        transition: background-color 0.3s ease, transform 0.2s ease-out;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      button:hover {
+        background-color: #ff6b8a; /* Darker shade on hover */
+      }
+
+      button:active {
+        transform: scale(0.95); /* Scale down when button is clicked */
+      }
+
+      footer {
+        background-color: #ff85a2; /* Light coral footer */
+        color: #fff;
+        padding: 20px;
+        display: flex; /* Flex layout for aligning items */
+        justify-content: space-between; /* Space between elements */
+        align-items: center; /* Center items vertically */
+        border-top: 3px solid #ff6b8a; /* Darker coral border */
+        box-shadow: -2px -2px 8px rgba(0, 0, 0, 0.1); /* Added box shadow */
+        border-radius: 8px; /* Rounded corners */
+      }
+
+      footer p {
+        margin: 0;
+        font-size: 16px; /* Adjusted font size */
+      }
+
+      /* Heart animation */
+      .heart {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ff6b8a"%3E%3Cpath d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/%3E%3C/svg%3E');
+        background-size: cover;
+        transition: transform 0.3s ease-in-out;
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+      }
+
+      /* Heart animation keyframes */
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(1.3);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* Apply animation to heart */
+      .animate-heart {
+        animation: pulse 0.6s ease-in-out;
+      }
+
+      /* Modal styles */
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.4
+        ); /* Black background with opacity */
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px;
+        border-radius: 8px;
+        position: relative;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+      }
+
+      /* Progress bar styles */
+      .progress-bar {
+        width: 100%;
+        background-color: #ddd;
+        border-radius: 5px;
+        margin-top: 10px;
+        position: relative;
+        overflow: hidden;
+        height: 20px; /* Adjusted height for visibility */
+      }
+
+      .progress-bar-fill {
+        height: 100%; /* Fills the entire height of the progress bar */
+        background-color: #ff85a2; /* Light coral */
+        width: 0;
+        transition: width 2s ease-in-out; /* Animation duration */
+      }
+
+      .progress-bar-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #555;
+        font-weight: bold;
+        font-size: 12px; /* Adjusted font size */
+        white-space: nowrap; /* Prevent text from wrapping */
+        overflow: hidden; /* Hide overflow */
+      }
+
+      .quiz {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        overflow: hidden;
+      }
+
+      .quiz-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        max-width: 80%;
+        text-align: center;
+      }
+
+      .quiz-question {
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+
+      .quiz-answer {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .quiz-answer:hover {
+        background-color: #f0f0f0;
+      }
+
+      .quiz-answer.correct {
+        background-color: #8bc34a; /* Green for correct answer */
+        color: #fff;
+      }
+
+      .quiz-answer.incorrect {
+        background-color: #e57373; /* Red for incorrect answer */
+        color: #fff;
+      }
+    </style>
   </head>
   <body>
     <header>
-      <h1>Наша історія</h1>
-      <nav>
-        <ul>
-          <li><a href="#home">Головна</a></li>
-          <li><a href="#timeline">Хронологія</a></li>
-          <li><a href="#gallery">Фотогалерея</a></li>
-          <li><a href="#playlist">Плейлист</a></li>
-          <li><a href="#contact">Контакт</a></li>
-        </ul>
-      </nav>
+      <h1>Ярусь, ти...</h1>
     </header>
-
-    <section id="home" class="section">
-      <h2>Вітаємо!</h2>
-      <p>
-        Ласкаво просимо на наш сайт, присвячений нашим стосункам. Ми раді
-        поділитися з вами нашою історією!
-      </p>
-    </section>
-
-    <section id="timeline" class="section">
-      <h2>Хронологія</h2>
-      <div class="timeline">
-        <div class="event">
-          <h3>Перший день знайомства</h3>
-          <p>Тут опишіть ваш перший день знайомства.</p>
-          <span class="date">Дата</span>
+    <main>
+      <section id="compliment-section">
+        <p id="compliment">Натисни сюди щоб дізнатись хто ти!</p>
+        <div class="progress-bar">
+          <div class="progress-bar-fill" id="progress-bar-fill"></div>
+          <div class="progress-bar-text" id="progress-bar-text">Дивимось?</div>
         </div>
-        <div class="event">
-          <h3>Перше побачення</h3>
-          <p>Тут опишіть ваше перше побачення.</p>
-          <span class="date">Дата</span>
-        </div>
-        <!-- Додайте більше подій за потреби -->
-      </div>
-    </section>
-
-    <section id="gallery" class="section">
-      <h2>Фотогалерея</h2>
-      <div class="gallery">
-        <img src="photo1.jpg" alt="Фото 1" />
-        <img src="photo2.jpg" alt="Фото 2" />
-        <!-- Додайте більше фото -->
-      </div>
-    </section>
-
-    <section id="playlist" class="section">
-      <h2>Плейлист</h2>
-      <div class="playlist">
-        <iframe
-          src="https://open.spotify.com/embed/playlist/ваш_плейлист"
-          width="300"
-          height="380"
-          frameborder="0"
-          allow="encrypted-media"
-        ></iframe>
-        <!-- Замість "ваш_плейлист" вставте посилання на свій плейлист -->
-      </div>
-    </section>
-
-    <section id="contact" class="section">
-      <h2>Контакт</h2>
-      <form id="contactForm">
-        <label for="name">Ім'я:</label>
-        <input type="text" id="name" name="name" required />
-        <label for="message">Повідомлення:</label>
-        <textarea id="message" name="message" required></textarea>
-        <button type="submit">Надіслати</button>
-      </form>
-    </section>
-
+        <button id="generate-btn">Подивитись</button>
+        <button id="get-gift-btn" disabled>Отримати подарунок !</button>
+      </section>
+    </main>
     <footer>
-      <p>© 2024 Наша історія</p>
+      <p>Приємних слів сказано: <span id="compliments-generated">0</span></p>
+      <button id="reset-btn">Все з початку</button>
+      <p style="font-size: 14px">Зроблено з ❤️ твоїм А.О</p>
     </footer>
+    <div class="quiz" id="quiz">
+      <div class="quiz-content" id="quiz-content">
+        <p id="quiz-question"></p>
+        <ul id="quiz-answers">
+          <li><button class="quiz-answer" data-index="0"></button></li>
+          <li><button class="quiz-answer" data-index="1"></button></li>
+          <li><button class="quiz-answer" data-index="2"></button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <span class="close" id="close-btn">&times;</span>
+        <p id="modal-compliment"></p>
+      </div>
+    </div>
+    <div class="heart" id="heart-animation"></div>
 
-    <script src="script.js"></script>
+    <script>
+      const compliments = [
+        "Твоя усмішка прекрасна!",
+        "Твоя доброта лікує мене :)",
+        "Ти допомагаєш більше, ніж усвідомлюєш.",
+        "У тебе чудове почуття гумору!",
+        "Твоя позитивна енергія заразлива.",
+        "Ти завжди така стильна!",
+        "Ти надихаєш мене своїм прикладом.",
+        "Твоя рішучість завжди вражає.",
+        "Ти дуже талановита!",
+        "Твої думки завжди цікаві і потрібні мені.",
+        "Ти вмієш знайти вихід з будь-якої ситуації.",
+        "Твій спокій найцінніший для мене.",
+        "Ти завжди знаходиш потрібні слова.",
+        "Ти дивовижна ;)",
+        "Ти здатна зробити мій світ найкращим місцем.",
+        "Твоя впевненість завжди надихає.",
+        "Ти дуже турботлива.",
+        "Ти вмієш вислухати та зрозуміти.",
+        "Ти неймовірно розумна!",
+        "Твоя уважність до деталей захоплює.",
+        "Ти завжди допоможеш.",
+        "Твій оптимізм нескінченний.",
+        "Ти надзвичайно сексуальна)))",
+        "Ти надзвичайно цікава особистість!",
+        "Людина - чудо).",
+        "Ти завжди знаєш коли і що важливо.",
+        "Ти підтримаєш у будь-якій ситуації.",
+        "Твоя впертість - твоя сила.",
+        "Моя робітничка.",
+        "Задля тебе хочеться завоювати світ.",
+        "Твоя винахідливість це щось.",
+        "Модніца",
+        "Ти надзвичайно швидка!",
+        "Ти така кмітлива!",
+        "Моя добрячка.",
+        "Надзвичайно уважна.",
+        "Твоє терпіння безмежне.",
+        "Завжди досягаєш свого.",
+        "На тебе завжди можна покластися.",
+        "Твоя цілеспрямованість надихає.",
+        "Ти відмінно вмієш організовувати роботу.",
+        "Твій ентузіазм неперевершений.",
+        "Твоя емпатія безмежна.",
+        "Частіше посміхайся :).",
+        "Ти завжди вмієш підбадьорити.",
+        "Твоя Божествена інтуїція.",
+        "Ти Дуже відповідальна.",
+        "Ти завжди вмієш впоратися з будь-якою складною ситуацією.",
+        "Твій вплив на інших просто неймовірний.",
+        "Моя мрійниця.",
+      ];
+
+      const quizQuestions = [
+        {
+          question: "What is the capital of France?",
+          answers: ["Paris", "London", "Berlin"],
+          correctAnswer: "Paris",
+        },
+        {
+          question: "Which planet is closest to the Sun?",
+          answers: ["Earth", "Venus", "Mercury"],
+          correctAnswer: "Mercury",
+        },
+        {
+          question: "Who painted the Mona Lisa?",
+          answers: ["Leonardo da Vinci", "Pablo Picasso", "Vincent van Gogh"],
+          correctAnswer: "Leonardo da Vinci",
+        },
+        {
+          question: "What is the largest mammal in the world?",
+          answers: ["Elephant", "Blue whale", "Giraffe"],
+          correctAnswer: "Blue whale",
+        },
+        {
+          question: "Who wrote 'Romeo and Juliet'?",
+          answers: ["William Shakespeare", "Jane Austen", "Charles Dickens"],
+          correctAnswer: "William Shakespeare",
+        },
+      ];
+
+      const complimentElement = document.getElementById("compliment");
+      const generateBtn = document.getElementById("generate-btn");
+      const progressBarFill = document.getElementById("progress-bar-fill");
+      const progressBarText = document.getElementById("progress-bar-text");
+      const modal = document.getElementById("modal");
+      const modalCompliment = document.getElementById("modal-compliment");
+      const closeBtn = document.getElementById("close-btn");
+      const heartAnimation = document.getElementById("heart-animation");
+      const complimentsGeneratedElement = document.getElementById(
+        "compliments-generated"
+      );
+      const resetBtn = document.getElementById("reset-btn");
+      const quizContainer = document.getElementById("quiz");
+      const quizContent = document.getElementById("quiz-content");
+      const quizQuestion = document.getElementById("quiz-question");
+      const quizAnswers = document.getElementById("quiz-answers");
+      const getGiftBtn = document.getElementById("get-gift-btn");
+
+      let totalComplimentsGenerated =
+        parseInt(localStorage.getItem("totalComplimentsGenerated")) || 0;
+      let giftButtonClicked = false;
+      let generatingCompliment = false; // Flag to track if a compliment is being generated
+
+      complimentsGeneratedElement.textContent = totalComplimentsGenerated;
+
+      function generateCompliment() {
+        if (generatingCompliment) {
+          return; // Exit early if a compliment is already being generated
+        }
+
+        generatingCompliment = true; // Set flag to true
+
+        let progress = 0;
+        const interval = setInterval(function () {
+          progress += Math.random() * 10; // Increment progress randomly
+          progressBarFill.style.width = `${Math.min(progress, 100)}%`; // Cap at 100%
+          if (progress >= 100) {
+            clearInterval(interval);
+            progressBarText.textContent = `Ти...`;
+            setTimeout(showCompliment, 500); // Delay before showing compliment
+          } else {
+            progressBarText.textContent = `Підбираю слова... ${Math.round(
+              progress
+            )}%`;
+          }
+        }, 200);
+
+        // Function to show compliment
+        function showCompliment() {
+          const randomIndex = Math.floor(Math.random() * compliments.length);
+          const compliment = compliments[randomIndex];
+          complimentElement.textContent = compliment;
+          totalComplimentsGenerated++;
+          localStorage.setItem(
+            "totalComplimentsGenerated",
+            totalComplimentsGenerated
+          );
+          complimentsGeneratedElement.textContent = totalComplimentsGenerated;
+          modalCompliment.textContent = compliment;
+          modal.style.display = "block"; // Show modal
+          heartAnimation.classList.add("animate-heart"); // Trigger heart animation
+
+          // Show quiz after every 20 compliments
+          if (totalComplimentsGenerated % 20 === 0) {
+            showQuiz();
+          }
+
+          setTimeout(function () {
+            modal.style.display = "none"; // Hide modal after animation
+            generatingCompliment = false; // Reset flag after compliment is shown
+          }, 2000); // 2 seconds delay
+
+          // Enable gift button if it hasn't been clicked yet
+          if (!giftButtonClicked) {
+            getGiftBtn.disabled = false;
+          }
+        }
+      }
+
+      function showQuiz() {
+        const randomQuestionIndex = Math.floor(
+          Math.random() * quizQuestions.length
+        );
+        const question = quizQuestions[randomQuestionIndex];
+        const correctAnswer = question.correctAnswer;
+        const answers = shuffleArray(question.answers);
+
+        quizQuestion.textContent = question.question;
+        quizAnswers.innerHTML = "";
+        answers.forEach((answer, index) => {
+          const button = document.createElement("button");
+          button.textContent = answer;
+          button.classList.add("quiz-answer");
+          button.setAttribute("data-index", index.toString());
+          quizAnswers.appendChild(button);
+        });
+
+        quizContainer.style.display = "block";
+        quizContent.style.display = "block";
+
+        quizAnswers.addEventListener("click", function (event) {
+          const selectedAnswer = event.target.closest(".quiz-answer");
+          if (selectedAnswer) {
+            const selectedIndex = parseInt(
+              selectedAnswer.getAttribute("data-index")
+            );
+            const selectedText = selectedAnswer.textContent;
+            if (selectedText === correctAnswer) {
+              // Correct answer
+              selectedAnswer.classList.add("correct");
+              setTimeout(hideQuiz, 1000); // Hide quiz after 1 second
+            } else {
+              // Incorrect answer, reset compliments generated
+              selectedAnswer.classList.add("incorrect");
+              totalComplimentsGenerated = 0;
+              localStorage.setItem(
+                "totalComplimentsGenerated",
+                totalComplimentsGenerated
+              );
+              complimentsGeneratedElement.textContent =
+                totalComplimentsGenerated;
+              setTimeout(hideQuiz, 1000); // Hide quiz after 1 second
+            }
+          }
+        });
+      }
+
+      function hideQuiz() {
+        quizContainer.style.display = "none";
+        quizContent.style.display = "none";
+        quizAnswers.innerHTML = ""; // Clear quiz answers
+        quizAnswers.removeEventListener("click"); // Remove event listener
+      }
+
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+
+      generateBtn.addEventListener("click", generateCompliment);
+
+      closeBtn.addEventListener("click", function () {
+        modal.style.display = "none"; // Close modal on close button click
+      });
+
+      resetBtn.addEventListener("click", function () {
+        localStorage.removeItem("totalComplimentsGenerated");
+        totalComplimentsGenerated = 0;
+        complimentsGeneratedElement.textContent = totalComplimentsGenerated;
+        hideQuiz(); // Hide quiz if reset button is clicked
+      });
+
+      getGiftBtn.addEventListener("click", function () {
+        if (!giftButtonClicked) {
+          giftButtonClicked = true;
+          getGiftBtn.disabled = true;
+          alert("БОНУС + 100 грн до завтрашнього обіду!");
+        }
+      });
+
+      // Initial hide quiz
+      hideQuiz();
+    </script>
   </body>
 </html>
