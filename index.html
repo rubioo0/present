@@ -1,79 +1,88 @@
 <!DOCTYPE html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Наша історія</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <header>
-        <h1>Наша історія</h1>
-        <nav>
-            <ul>
-                <li><a href="#home">Головна</a></li>
-                <li><a href="#timeline">Хронологія</a></li>
-                <li><a href="#gallery">Фотогалерея</a></li>
-                <li><a href="#playlist">Плейлист</a></li>
-                <li><a href="#contact">Контакт</a></li>
-            </ul>
-        </nav>
+      <h1>Наша історія</h1>
+      <nav>
+        <ul>
+          <li><a href="#home">Головна</a></li>
+          <li><a href="#timeline">Хронологія</a></li>
+          <li><a href="#gallery">Фотогалерея</a></li>
+          <li><a href="#playlist">Плейлист</a></li>
+          <li><a href="#contact">Контакт</a></li>
+        </ul>
+      </nav>
     </header>
-    
-    <section id="home">
-        <h2>Вітаємо!</h2>
-        <p>Ласкаво просимо на наш сайт, присвячений нашим стосункам. Ми раді поділитися з вами нашою історією!</p>
+
+    <section id="home" class="section">
+      <h2>Вітаємо!</h2>
+      <p>
+        Ласкаво просимо на наш сайт, присвячений нашим стосункам. Ми раді
+        поділитися з вами нашою історією!
+      </p>
     </section>
-    
-    <section id="timeline">
-        <h2>Хронологія</h2>
-        <div class="timeline">
-            <div class="event">
-                <h3>Перший день знайомства</h3>
-                <p>Тут опишіть ваш перший день знайомства.</p>
-                <span class="date">Дата</span>
-            </div>
-            <div class="event">
-                <h3>Перше побачення</h3>
-                <p>Тут опишіть ваше перше побачення.</p>
-                <span class="date">Дата</span>
-            </div>
-            <!-- Додайте більше подій за потреби -->
+
+    <section id="timeline" class="section">
+      <h2>Хронологія</h2>
+      <div class="timeline">
+        <div class="event">
+          <h3>Перший день знайомства</h3>
+          <p>Тут опишіть ваш перший день знайомства.</p>
+          <span class="date">Дата</span>
         </div>
-    </section>
-    
-    <section id="gallery">
-        <h2>Фотогалерея</h2>
-        <div class="gallery">
-            <img src="photo1.jpg" alt="Фото 1">
-            <img src="photo2.jpg" alt="Фото 2">
-            <!-- Додайте більше фото -->
+        <div class="event">
+          <h3>Перше побачення</h3>
+          <p>Тут опишіть ваше перше побачення.</p>
+          <span class="date">Дата</span>
         </div>
+        <!-- Додайте більше подій за потреби -->
+      </div>
     </section>
-    
-    <section id="playlist">
-        <h2>Плейлист</h2>
-        <div class="playlist">
-            <iframe src="https://open.spotify.com/embed/playlist/ваш_плейлист" width="300" height="380" frameborder="0" allow="encrypted-media"></iframe>
-            <!-- Замість "ваш_плейлист" вставте посилання на свій плейлист -->
-        </div>
+
+    <section id="gallery" class="section">
+      <h2>Фотогалерея</h2>
+      <div class="gallery">
+        <img src="photo1.jpg" alt="Фото 1" />
+        <img src="photo2.jpg" alt="Фото 2" />
+        <!-- Додайте більше фото -->
+      </div>
     </section>
-    
-    <section id="contact">
-        <h2>Контакт</h2>
-        <form id="contactForm">
-            <label for="name">Ім'я:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="message">Повідомлення:</label>
-            <textarea id="message" name="message" required></textarea>
-            <button type="submit">Надіслати</button>
-        </form>
+
+    <section id="playlist" class="section">
+      <h2>Плейлист</h2>
+      <div class="playlist">
+        <iframe
+          src="https://open.spotify.com/embed/playlist/ваш_плейлист"
+          width="300"
+          height="380"
+          frameborder="0"
+          allow="encrypted-media"
+        ></iframe>
+        <!-- Замість "ваш_плейлист" вставте посилання на свій плейлист -->
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h2>Контакт</h2>
+      <form id="contactForm">
+        <label for="name">Ім'я:</label>
+        <input type="text" id="name" name="name" required />
+        <label for="message">Повідомлення:</label>
+        <textarea id="message" name="message" required></textarea>
+        <button type="submit">Надіслати</button>
+      </form>
     </section>
 
     <footer>
-        <p>© 2024 Наша історія</p>
+      <p>© 2024 Наша історія</p>
     </footer>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
